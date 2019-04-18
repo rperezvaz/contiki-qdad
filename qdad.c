@@ -15,7 +15,7 @@
 #define UID_TIMEOUT 2*ADDRESS_DISCOVERY
 
 // Custom global variables
-#define MAX_T_START 10
+#define MAX_T_START 10 //seconds
 #define MAX_ENTRIES 1000
 #define MAX_HOPS 50
 
@@ -98,6 +98,14 @@ static void broadcast_recv(struct broadcast_conn *c, const linkaddr_t *from)
   struct areq *areq_recv;
   struct areq_memory *areq_mem;
   struct reverse_route_areq *rra;
+
+  // Check if we are in NORMAL_STATE
+  if(actual_state != NORMAL_STATE)
+  {
+    printf("  [BROADCAST_RECV] Actual state is not NORMAL_STATE, discard message\n");
+    printf("[BROADCAST_RECV] Leaving function...\n");
+    return;
+  }
 
   // AREQ received
   areq_recv = packetbuf_dataptr();
